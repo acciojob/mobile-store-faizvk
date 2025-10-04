@@ -69,7 +69,12 @@ export default function App() {
     <Router>
       <div className="app">
         <nav>
-          <Link to="/">Home</Link> | <Link to="/admin">Admin Panel</Link>
+          <span>
+            <Link to="/">Home</Link>
+          </span>
+          <span>
+            <Link to="/admin">Admin Panel</Link>
+          </span>
         </nav>
         <Switch>
           <Route
