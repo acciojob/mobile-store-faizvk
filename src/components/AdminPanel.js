@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function AdminPanel({ products, setProducts }) {
@@ -9,22 +9,15 @@ export default function AdminPanel({ products, setProducts }) {
     image: "",
   });
 
-  // Local edit state so admin can change fields and then Save
-  const [edits, setEdits] = useState(
-    products.reduce((acc, p) => {
-      acc[p.id] = { ...p };
-      return acc;
-    }, {})
-  );
+  const [edits, setEdits] = useState({});
 
-  // Keep edits in sync when products change (e.g., after delete/add)
-  React.useEffect(() => {
-    setEdits(
-      products.reduce((acc, p) => {
-        acc[p.id] = { ...p };
-        return acc;
-      }, {})
-    );
+  // keep edits synced with products
+  useEffect(() => {
+    const initial = {};
+    products.forEach((p) => {
+      initial[p.id] = { ...p };
+    });
+    setEdits(initial);
   }, [products]);
 
   const handleAdd = () => {
@@ -34,7 +27,12 @@ export default function AdminPanel({ products, setProducts }) {
     const image = newProduct.image || "https://via.placeholder.com/150";
     setProducts([
       ...products,
-      { id: nextId, ...newProduct, price: parseFloat(newProduct.price), image },
+      {
+        id: nextId,
+        ...newProduct,
+        price: parseFloat(newProduct.price),
+        image,
+      },
     ]);
     setNewProduct({ name: "", price: "", description: "", image: "" });
   };
@@ -46,12 +44,11 @@ export default function AdminPanel({ products, setProducts }) {
   const handleLocalEdit = (id, field, value) => {
     setEdits((prev) => ({
       ...prev,
-      [id]: { ...prev[id], [field]: field === "price" ? value : value },
+      [id]: { ...prev[id], [field]: value },
     }));
   };
 
   const handleSave = (id) => {
-    if (!edits[id]) return;
     const updated = { ...edits[id], price: parseFloat(edits[id].price) || 0 };
     setProducts(products.map((p) => (p.id === id ? updated : p)));
   };
@@ -60,6 +57,7 @@ export default function AdminPanel({ products, setProducts }) {
     <div>
       <h1 className="text-2xl font-bold mb-4">Admin Panel</h1>
 
+      {/* Add New Product */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 row">
         <input
           className="form-control"
@@ -99,23 +97,20 @@ export default function AdminPanel({ products, setProducts }) {
         </button>
       </div>
 
+      {/* Product List */}
       <div className="grid grid-cols-1 gap-4">
         {products.map((p, index) => {
-          const local = edits[p.id] || { ...p };
+          const local = edits[p.id] || p;
           return (
-            <div key={p.id} className="border p-4 rounded">
-              <div className="flex items-center row">
-                {/* Link only on image & name — inputs are editable without navigation */}
-                <div className="flex items-center row flex-1">
-                  <Link to={`/products/${p.id}`}>
-                    <img
-                      src={p.image || "https://via.placeholder.com/150"}
-                      alt={p.name}
-                      className="w-12 h-12 mr-4"
-                    />
-                  </Link>
-
-                  <div className="flex-1">
+            <div key={p.id} className="col-12 border p-4 rounded">
+              <Link to={`/products/${p.id}`}>
+                <div className="row flex items-center">
+                  <img
+                    src={p.image || "https://via.placeholder.com/150"}
+                    alt={p.name}
+                    className="w-12 h-12 mr-4"
+                  />
+                  <div>
                     <input
                       className="form-control"
                       value={local.name}
@@ -133,22 +128,20 @@ export default function AdminPanel({ products, setProducts }) {
                     />
                   </div>
                 </div>
-
-                <div className="ml-4">
-                  <button
-                    className="float-right btn"
-                    onClick={() => handleDelete(p.id)}
-                  >
-                    Delete
-                  </button>
-                  <button
-                    className="float-right btn"
-                    style={{ marginRight: 8 }}
-                    onClick={() => handleSave(p.id)}
-                  >
-                    Save
-                  </button>
-                </div>
+              </Link>
+              <div className="mt-2">
+                <button
+                  className="float-right btn"
+                  onClick={() => handleDelete(p.id)}
+                >
+                  Delete
+                </button>
+                <button
+                  className="float-right btn mr-2"
+                  onClick={() => handleSave(p.id)}
+                >
+                  Save
+                </button>
               </div>
             </div>
           );
