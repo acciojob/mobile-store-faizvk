@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import ProductList from "./ProductList";
 import ProductDetails from "./ProductDetails";
 import AdminPanel from "./AdminPanel";
+import "./styles.css";
 
 export default function App() {
   const [products, setProducts] = useState([
@@ -66,14 +67,9 @@ export default function App() {
 
   return (
     <Router>
-      <div className="container mx-auto p-4">
-        <nav className="mb-4">
-          <Link to="/" className="mr-4 text-blue-500 hover:underline">
-            Home
-          </Link>
-          <Link to="/admin" className="text-blue-500 hover:underline">
-            Admin Panel
-          </Link>
+      <div className="container">
+        <nav>
+          <Link to="/">Home</Link> | <Link to="/admin">Admin Panel</Link>
         </nav>
         <Switch>
           <Route
