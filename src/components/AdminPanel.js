@@ -38,65 +38,54 @@ export default function AdminPanel({ products, setProducts }) {
   };
 
   return (
-    <div className="container">
-      <h1>Admin Panel</h1>
-      {/* Fix 2: Added .row class and wrapped inputs in .col-sm-4 divs */}
-      <div className="admin-form row">
-        <div className="col-sm-4">
-          <input
-            className="form-control"
-            placeholder="Name"
-            value={newProduct.name}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, name: e.target.value })
-            }
-          />
-        </div>
-        <div className="col-sm-4">
-          <input
-            className="form-control"
-            placeholder="Price"
-            type="number"
-            value={newProduct.price}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, price: e.target.value })
-            }
-          />
-        </div>
-        <div className="col-sm-4">
-          <input
-            className="form-control"
-            placeholder="Description"
-            value={newProduct.description}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, description: e.target.value })
-            }
-          />
-        </div>
-        <div className="col-sm-4">
-          <input
-            className="form-control"
-            placeholder="Image URL"
-            value={newProduct.image}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, image: e.target.value })
-            }
-          />
-        </div>
-        <div className="col-sm-4">
-          <button className="btn" onClick={handleAdd}>
-            Add
-          </button>
-        </div>
+    <div>
+      <h1 className="text-2xl font-bold mb-4">Admin Panel</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 row">
+        <input
+          className="form-control"
+          placeholder="Name"
+          value={newProduct.name}
+          onChange={(e) =>
+            setNewProduct({ ...newProduct, name: e.target.value })
+          }
+        />
+        <input
+          classNameHASE0
+          className="form-control"
+          placeholder="Price"
+          type="number"
+          value={newProduct.price}
+          onChange={(e) =>
+            setNewProduct({ ...newProduct, price: e.target.value })
+          }
+        />
+        <input
+          className="form-control"
+          placeholder="Description"
+          value={newProduct.description}
+          onChange={(e) =>
+            setNewProduct({ ...newProduct, description: e.target.value })
+          }
+        />
+        <input
+          className="form-control"
+          placeholder="Image URL"
+          value={newProduct.image}
+          onChange={(e) =>
+            setNewProduct({ ...newProduct, image: e.target.value })
+          }
+        />
+        <button className="btn" onClick={handleAdd}>
+          Add
+        </button>
       </div>
-      <div className="admin-list row">
-        {products.map((p) => (
-          <div key={p.id} className="col-12">
-            {/* Fix 1: Added a wrapping div around the Link and button */}
-            <div>
+      <div className="grid grid-cols-1 gap-4">
+        {products.map((p, index) => (
+          <div key={p.id} className="border p-4 rounded">
+            <div className="flex items-center row">
               <Link to={`/products/${p.id}`}>
-                <div className="row">
-                  <img src={p.image} alt={p.name} style={{ width: 50 }} />
+                <div className="flex items-center row">
+                  <img src={p.image} alt={p.name} className="w-12 h-12 mr-4" />
                   <div>
                     <input
                       className="form-control"
@@ -115,7 +104,7 @@ export default function AdminPanel({ products, setProducts }) {
                 </div>
               </Link>
               <button
-                className="float-right"
+                className="float-right btn"
                 onClick={() => handleDelete(p.id)}
               >
                 Delete
