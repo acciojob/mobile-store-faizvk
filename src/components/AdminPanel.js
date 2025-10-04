@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function AdminPanel({ products, setProducts }) {
   const [newProduct, setNewProduct] = useState({
@@ -33,7 +34,7 @@ export default function AdminPanel({ products, setProducts }) {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Admin Panel</h1>
       <div className="admin-form">
         <input
@@ -70,29 +71,38 @@ export default function AdminPanel({ products, setProducts }) {
         />
         <button onClick={handleAdd}>Add</button>
       </div>
-      <div className="admin-list">
-        {products.map((p) => (
-          <div key={p.id} className="admin-card">
-            <input
-              className="form-control"
-              value={p.name}
-              onChange={(e) => handleEdit(p.id, "name", e.target.value)}
-            />
-            <input
-              className="form-control"
-              value={p.price}
-              onChange={(e) => handleEdit(p.id, "price", e.target.value)}
-            />
-            <input
-              className="form-control"
-              value={p.description}
-              onChange={(e) => handleEdit(p.id, "description", e.target.value)}
-            />
-            <input
-              className="form-control"
-              value={p.image}
-              onChange={(e) => handleEdit(p.id, "image", e.target.value)}
-            />
+      <div className="admin-list row">
+        {products.map((p, index) => (
+          <div key={p.id} className="col-12">
+            <Link to={`/products/${p.id}`}>
+              <div className="row">
+                <img src={p.image} alt={p.name} style={{ width: 50 }} />
+                <div>
+                  <input
+                    className="form-control"
+                    value={p.name}
+                    onChange={(e) => handleEdit(p.id, "name", e.target.value)}
+                  />
+                  <input
+                    className="form-control"
+                    value={p.price}
+                    onChange={(e) => handleEdit(p.id, "price", e.target.value)}
+                  />
+                  <input
+                    className="form-control"
+                    value={p.description}
+                    onChange={(e) =>
+                      handleEdit(p.id, "description", e.target.value)
+                    }
+                  />
+                  <input
+                    className="form-control"
+                    value={p.image}
+                    onChange={(e) => handleEdit(p.id, "image", e.target.value)}
+                  />
+                </div>
+              </div>
+            </Link>
             <button className="float-right" onClick={() => handleDelete(p.id)}>
               Delete
             </button>
