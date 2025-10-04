@@ -10,7 +10,11 @@ export default function ProductList({ products }) {
           <div key={p.id} className="border p-4 rounded">
             <Link to={`/products/${p.id}`}>
               <div className="flex items-center row">
-                <img src={p.image} alt={p.name} className="w-24 h-24 mr-4" />
+                <img
+                  src={p.image || "https://via.placeholder.com/150"}
+                  alt={p.name}
+                  className="w-24 h-24 mr-4"
+                />
                 <div>
                   <h3 className="text-lg font-semibold">{p.name}</h3>
                   <p>${p.price}</p>
