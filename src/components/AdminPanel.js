@@ -11,7 +11,7 @@ export default function AdminPanel({ products, setProducts }) {
 
   const [edits, setEdits] = useState({});
 
-  // sync edit state with products
+  // initialize editable state
   useEffect(() => {
     const initial = {};
     products.forEach((p) => {
@@ -99,12 +99,15 @@ export default function AdminPanel({ products, setProducts }) {
 
       {/* Product List */}
       <div className="grid grid-cols-1 gap-4">
-        {products.map((p, index) => {
+        {products.map((p) => {
           const local = edits[p.id] || p;
           return (
-            <div key={p.id} className="col-12 border p-4 rounded">
-              {/* Cypress expects :nth-child(x) > a */}
-              <Link to={`/products/${p.id}`}>
+            <React.Fragment key={p.id}>
+              {/* Cypress expects nth-child(n) > a */}
+              <Link
+                to={`/products/${p.id}`}
+                className="block border p-4 rounded"
+              >
                 <div className="row flex items-center">
                   <img
                     src={p.image || "https://via.placeholder.com/150"}
@@ -131,7 +134,7 @@ export default function AdminPanel({ products, setProducts }) {
                 </div>
               </Link>
 
-              {/* Buttons outside <a> so they don’t trigger navigation */}
+              {/* Buttons come after the <a> so clicks don't navigate */}
               <div className="mt-2">
                 <button
                   className="float-right btn"
@@ -146,7 +149,7 @@ export default function AdminPanel({ products, setProducts }) {
                   Save
                 </button>
               </div>
-            </div>
+            </React.Fragment>
           );
         })}
       </div>
